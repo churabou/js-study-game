@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang='ja'>
+<style>
+body{
+  padding:40px;
+  text-align: center;
+}
+#board{
+  display: inline-block;
+  margin-right: 0px;
+}
+.tile{
+  width:30px;
+  height:30px;
+  border: 1px solid black;
+  display: inline-block;
+  vertical-align: middle;
+}
+.wall{
+  width:30px;
+  height:30px;
+  border: 1px solid black;
+  background-color: grey;
+  display: inline-block;
+  vertical-align: middle;
+}
+.start{
+  width:126px;
+  height:30px;
+  border: 1px solid black;
+  background-color: orange;
+  color:white;
+  display: inline-block;
+  vertical-align: middle;
+}
+#side{
+  display: inline-block;
+  margin: 0px;
+}
+</style>
+<body>
+
+<div id=board></div><div id=side></div>
+<p id='score'></p>
+<button onclick="nextGame()">aaa</button>
+<script>
+function _$(id){ return document.getElementById(id);}
+var board = _$('board');
+var height = 20, width = 10;
+
+function createCell(){
+
+  for(var i=0; i<12; i++){
+      board.appendChild(wall())
+  }
+      board.appendChild(br());
+   for(var j=0; j<height; j++){
+        board.appendChild(wall())
+   for(var i=0; i<width; i++){
+        board.appendChild(tile(j,i))
+     }
+        board.appendChild(wall())
+        board.appendChild(br());
+  }
+  for(var i=0; i<12; i++){
+      board.appendChild(wall())
+  }
+}
+
+function createSide(){
+  wallLine(14)
+
+_$('side').appendChild(wall())
+_$('side').appendChild(area('time'))
+_$('side').appendChild(wall())
+_$('side').appendChild(wall())
+_$('side').appendChild(br())
+
+
+_$('side').appendChild(wall())
+_$('side').appendChild(area('score'))
+_$('side').appendChild(wall())
+_$('side').appendChild(wall())
+_$('side').appendChild(br())
+wallLine(4)
+_$('side').appendChild(wall())
+_$('side').appendChild(btn())
+_$('side').appendChild(wall())
+_$('side').appendChild(wall())
+_$('side').appendChild(br())
+
+wallLine(1)
+
+
+}
+
+function wall(){
+  var wl = document.createElement('div');
+      wl.className = 'wall'
+      return wl;
+}
+
+function tile(j,i){
+  var tile = document.createElement('div');
+      tile.className = 'tile'
+      tile.id = [j,i]
+      tile.style.background = "white"
+      tile.block = false;
+      return tile;
+}
+
+function br(){
+  return document.createElement('br')
+}
+
+function wallLine(n){
+  for(var i=0; i<n; i++){
+    for(var j=0; j<7; j++){
+      _$('side').appendChild(wall())
+    }
+    _$('side').appendChild(br())
+  }
+}
+
+function btn(){
+  var bt = document.createElement('div');
+      bt.className = 'start'
+      bt.innerHTML = 'START'
+      bt.id = 'start'
+      bt.addEventListener('click',function(){
+           if(stats == 'Gameover'){newGame()}
+         })
+      return bt;
+}
+function area(a){
+  var bt = document.createElement('div');
+      bt.className = 'start'
+      bt.id = a
+      return bt;
+}
+
+
+
+//テトリス
+
+var type = ["I","O","T","J","L","S","Z"];
+var dx = 0, dy = 0;
+var score = 0;
+var stats = 'Gameover'
+
+var currentBlock;
+
+function Block(s){
+  this.p = null;
+  this.c = null;
+
+  switch (s) {
+    case  "I":
+      this.c = 'aqua';
+      this.p = [[0,0],[1,0],[2,0],[3,0]];
+    break;
+    case  "O":
+      this.c = 'yellow';
+      this.p = [[0,0],[0,1],[1,0],[1,1]];
+    break;
+    case  "T":
+      this.c = 'violet';
+      this.p = [[0,1],[1,0],[1,1],[2,1]];
+    break;
+    case  "J":
+      this.c = 'blue';
+      this.p = [[0,0],[0,1],[1,0],[2,0]];
+    break;
+    case  "L":
+      this.c = 'orange';
+      this.p = [[0,0],[0,1],[1,1],[2,1]];
+    break;
+    case  "S":
+      this.c = 'lime';
+      this.p = [[0,1],[0,2],[1,0],[1,1]];
+    break;
+    case  "Z":
+      this.c = 'red';
+      this.p = [[0,0],[0,1],[1,1],[1,2]];
+    break;
+
+
+  }
+}
+
+
+function clearScrean(){
+  for(var j=0; j<height; j++){
+   for(var i=0; i<width; i++){
+     _$([j,i]).style.background = 'white';
+     _$([j,i]).block = false;
+   }
+ }
+}
+
+
+function fillBlock(ary,c){
+   _$(ary).style.background = c;
+}
+
+
+function drawBlock(){
+  var ary = currentBlock.p
+    for(var i=0,len=ary.length; i<len; i++){
+        var a = ary[i][0] + dy, b = ary[i][1] + dx;
+         fillBlock([a,b],currentBlock.c);
+    }
+}
+
+function clearBlock(){
+  var ary = currentBlock.p
+  for(var i=0,len=ary.length; i<len; i++){
+      var a = ary[i][0] + dy, b = ary[i][1] + dx;
+       fillBlock([a,b],"white");
+  }
+}
+
+function createBlock(){
+  dx = 0, dy = 0;
+  var rand = Math.floor(Math.random()*type.length);
+      currentBlock = new Block(type[rand]);
+}
+
+
+function updateBlock(d){
+   if(d==0){ dy+=1; }
+   if(d==1){ dx+=1; }
+   if(d==-1){ dx-=1; }
+}
+
+function turnBlock(){
+  clearBlock()
+  var before = copy_ary(currentBlock.p)
+  for(var i=0; i<currentBlock.p.length; i++){
+      var a = currentBlock.p[i][0], b = currentBlock.p[i][1];
+          currentBlock.p[i] = [b,3-a]
+    }
+  if(!valid()){ currentBlock.p = before;}
+
+  drawBlock()
+
+}
+
+function moveBlock(d){
+  if(valid(d)){
+     clearBlock()
+     updateBlock(d)
+     drawBlock()
+  }
+}
+
+
+function dropBlock(){
+
+ if(valid(0)){
+    moveBlock(0);
+    setTimeout(function(){dropBlock()},500);
+  }else{//これ以上下に行かない場合
+      freeze()
+      var lines = [];
+      for(var i=1; i<18; i++){
+         if(gudge(i)){lines.push(i);}//消せる行を見つける
+       }
+      if(lines.length==0){ nextBlock(); return;}
+      for(var i=0; i<lines.length; i++){
+           clearLine(lines[i])
+           scoreUp()
+        }
+      setTimeout(function(){
+      for(var i=lines.length; i>-1; i--){
+          dropLine(lines[i])//上の行から先に落とす。
+       }
+       blockp()
+       nextBlock();
+     },300)
+  }
+}
+
+function nextBlock(){
+  createBlock()
+  if(gameover()){return;}
+  drawBlock(currentBlock)
+  setTimeout(dropBlock,300)
+}
+
+
+function valid(a){//任意の方向にブロックが動かせるか判定。
+  var m=0,n=0;
+  if(a==0){m=1}
+  if(a==1){n=1}
+  if(a==-1){n=-1}
+  for(var i=0; i<currentBlock.p.length; i++) {
+        var y = currentBlock.p[i][0] + dy + m;
+            x = currentBlock.p[i][1] + dx + n;
+        if(_$([y,x])==null){ return false}//ますであること
+        if(_$([y,x]).block == true){ return false}//タイルがないこと
+  }
+  return true;
+}
+
+function freeze(){//ブロックを固定 --> .block = true
+    for (var i=0; i<currentBlock.p.length; i++) {
+        var a = currentBlock.p[i][0]+dy, b=currentBlock.p[i][1]+dx
+            _$([a,b]).block = true;
+    }
+}
+
+function gudge(n){//一列ブロックで埋まっているかを判定。
+  for(var i=0; i<width; i++){
+    if(  _$([height-n,i]).style.background == "white"){  return false;}
+  }
+  return true;
+}
+
+
+function clearLine(n){//n行目のブロックを全て消す。
+  for(var i=0; i<width; i++){
+      _$([height-n,i]).style.background = "white";
+  }
+}
+
+function dropLine(n){//n行目より上にあるブロックを全て一段落とす。
+  for(var i=height-n; i>0; i--){
+    for(var j=0; j<width; j++){
+         _$([i,j]).style.background = _$([i-1,j]).style.background
+      }
+    }
+}
+
+function blockp(){//そこにブロックがあるかないかを判定
+  for(var i=0; i<height; i++){
+    for(var j=0; j<width; j++){
+        if(_$([i,j]).style.background=='white'){
+            _$([i,j]).block = false;}else{_$([i,j]).block = true;}
+    }
+  }
+}
+
+function copy_ary(ary){
+  var copy = []
+  for (var i=0; i<ary.length; i++) {
+        copy[i] = [ary[i][0],ary[i][1]]
+  }
+  return copy;
+}
+
+function gameover(){
+  var ary = currentBlock.p
+  for(var i=0; i<ary.length; i++){
+     if(_$(ary[i]).block == true ){
+        _$('time').innerHTML ='Gameover';
+        _$('start').innerHTML ='NextGame';
+        stats = 'Gameover'
+          return true;
+     }
+  }
+}
+
+function scoreUp(){
+  score += 1;
+  _$('score').innerHTML = score + "  LINES";
+}
+
+function newGame(){
+
+  clearScrean()
+  score = 0;
+  tm=0;
+  stats = 'Playing'
+  _$('time').innerHTML = tm;
+  _$('score').innerHTML = "0 LINES";
+  _$('start').innerHTML = 'Playing';
+  createBlock()
+  drawBlock(currentBlock)
+  setTimeout(dropBlock,500)
+  run()
+}
+
+var tm = 0;
+function run(){
+  if(_$('time').innerHTML == 'Gameover'){
+    return;
+  }
+  tm+=1
+  _$('time').innerHTML = tm;
+   setTimeout(run,1000)
+}
+
+
+(function main(){
+  createCell()
+  createSide()
+  window.addEventListener('keydown',function(e){
+    if(e.keyCode==37){ moveBlock(-1) }
+    if(e.keyCode==39){ moveBlock(1) }
+    if(e.keyCode==38){ turnBlock() }
+    if(e.keyCode==40){ moveBlock(0) }
+  })
+})();
+
+
+
+//
+// var ll=0
+// function aaa(){
+//
+//   setTimeout(function(){console.log(ll);ll+=1},500)
+// }
+//
+// for(var i=0; i<5; i++){
+//   aaa()
+// }
+//
+// function qqq(){
+//     console.log('before')
+//     setTimeout(function(){console.log(ll);ll+=1},500)
+//     console.log('after')
+// }
+//
+// qqq()
+// function bbb(){
+//     console.log('bb from bbb()')
+//     return false
+// }
+// function aaa(){
+//
+//   bbb( )
+//   console.log('bbb')
+// }
+//
+// aaa()
+</script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang='ja'>
+<mata charset='utf-8'>
+<style>
+body{
+  padding:40px;
+  text-align: center;
+}
+.tile{
+  width:70px;
+  height:70px;
+  background-color:green;
+  border : 2px solid black;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.black{
+  width:60px;
+  height:60px;
+  display: inline-block;
+  border-radius:30px;
+  background-color: black;
+  margin-top:5px;
+}
+.white{
+  width:60px;
+  height:60px;
+  display: inline-block;
+  border-radius:30px;
+  background-color: white;
+  margin-top:5px;
+}
+</style>
+<body>
+
+
+
+<script>
+//日本語でやることを明確にメモし順序良く進め
+//バグにもスムーズに対応し段取りの良いプログラミングをする。
+
+//縦方向おんly　しかもタイル黒固定
+
+function other(hiki){
+  if(hiki === 'black'){
+    return 'white';
+  }
+  if(hiki === 'white'){
+    return 'black'
+  }
+}
+
+var dir = {};
+    dir.vertical = function (hiki,i){
+       return [ hiki[0]-i,hiki[1]]
+    }
+    dir.slant_right = function (me,i){
+                     return [ me[0]+i,me[1]+i]
+                   };
+    dir.slant_left = function (me,i){
+                   return [ me[0]-i,me[1]+i]
+                  }
+    dir.horizon = function (me,i){
+                    return [ me[0],me[1]+i]
+                 };
+
+
+
+
+for( var i=0; i<8; i++){
+  for(var j=0; j<8; j++){
+    create(i,j)
+  }
+  document.body.appendChild(document.createElement('br'))
+}
+
+function create(i,j){
+  var tile = document.createElement('div');
+      tile.className = 'tile'
+      tile.id = 'tile_'+[i,j];
+      tile.addEventListener('click',function (){
+
+      if(coin.className === '' ){
+      var xx = player
+      //立て　横　七星
+      for(var z=0; z<4; z++){
+      var rrr = ['vertical','slant_right','slant_left','horizon']
+      if(gudge([i,j],rrr[z])[0] === true) {
+        coin.className = color[player%2]
+        turn_sei([i,j],rrr[z]);
+
+      }
+      if(gudge([i,j],rrr[z])[1] === true) {
+        coin.className = color[player%2]
+        turn_hu([i,j],rrr[z]);
+
+      }
+        //ひっクリがえす
+
+
+      }  player+=1
+  look_for()
+    }
+      })
+  document.body.appendChild(tile)
+
+  var coin = document.createElement('div');
+      coin.className = ''
+      coin.id = 'coin_'+[i,j];
+      tile.appendChild(coin)
+
+}
+
+
+
+
+var player = 0;
+var color = ['black','white'];
+
+function gudge(hiki,dirction){
+  var me = hiki;
+  var t_f = [];
+  for (var i=1; i<=7; i++){   //縦方向 正
+    var id = dir[dirction](me,i);
+    var next = document.getElementById('coin_'+id);
+    if(   next === null ){ break}
+    if( i === 1 && next.className !== other(color[player%2])){//other
+       break;//次のタイルと色が同じならおけない
+       }
+    if(next.className === color[player%2]){//次の次のタイル以降に同じ色があればおける
+       t_f[0]=true
+        break  //おけるかを返す
+    }
+
+  } //for
+
+  for (var i= -1; i>-8; i--){   //縦方向 負
+    var id = dir[dirction](me,i);
+    var next = document.getElementById('coin_'+id);
+    if(   next === null ){ break}
+    if( i === -1 && next.className !== other(color[player%2])){//other
+       break;//次のタイルと色が同じならおけない
+       }
+    if(next.className === color[player%2]){//2こめ行こう
+      t_f[1]=true
+       break //おけるかを返す //この方向はいい
+    }
+  }//for
+  return t_f;
+}
+
+
+function turn_sei(hiki,dirction){
+  for( var i=1; i<=7; i++){
+  var id = dir[dirction](hiki,i)
+  var next = document.getElementById('coin_'+id);
+  if(next.className === color[player%2]){return}
+  if(next.className === other(color[player%2])){
+    next.className = color[player%2]
+  }}//行けるかどうか
+}
+
+function turn_hu(hiki,dirction){
+  for( var i=-1; i>-8; i--){
+  var id = dir[dirction](hiki,i)
+  var next = document.getElementById('coin_'+id);
+  if(next.className === color[player%2]){return}
+  if(next.className === other(color[player%2])){
+    next.className = color[player%2]
+  }}
+}
+
+
+
+
+function look_for(){
+ for(var i=0; i<8; i++){
+   for(var j=0; j<8; j++){
+   var coin = document.getElementById('coin_'+[i,j])
+   var tile = document.getElementById('tile_'+[i,j])
+   tile.style.background = 'green'
+   var ccc; if(player%2===0){ccc='red'}else{ccc='yellow'}
+   for(var z=0; z<4; z++){
+     if(coin.className === ''){
+   var rrr = ['vertical','slant_right','slant_left','horizon']
+   if(gudge([i,j],rrr[z])[0] === true) {
+     tile.style.background = ccc
+     break;
+
+   }
+   if(gudge([i,j],rrr[z])[1] === true) {
+   document.getElementById('tile_'+[i,j]).style.background = ccc
+   break;
+   }
+}
+ }}}}
+
+
+
+
+document.getElementById('coin_3,4').className = 'black'
+document.getElementById('coin_3,3').className =  'white'
+document.getElementById('coin_4,3').className ='black'
+document.getElementById('coin_4,4').className = 'white'
+
+look_for()
+
+//
+
+
+
+
+/*
+
+処理その位t
+
+look forしようかな
+tile変えようかな
+
+
+*/
+
+</script>
+</body>
+</html>

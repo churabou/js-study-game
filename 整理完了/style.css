@@ -1,0 +1,282 @@
+body{
+  padding: 50px;
+  text-align: center;
+}
+.top_board{
+ margin-top:0px;
+ width:250px;
+ height:160px;
+ padding:4px;
+ border:  2px green solid;
+ display:inline-block;
+ vertical-align: middle;
+ transform: rotateZ(180deg);
+}
+.side_board{
+  margin-right: -50px;
+  margin-left: -51px;
+  width:250px;
+  height:160px;
+  padding:4px;
+  border:  2px green solid;
+  display:inline-block;
+  vertical-align: middle;
+}
+.left{
+  transform: rotateZ(90deg);
+}
+
+.right{
+  transform: rotateZ(-90deg);
+}
+.center_board{
+  width:250px;
+  height:250px;
+  padding:4px;
+  border:  2px green solid;
+  display:inline-block;
+  vertical-align: middle;
+}
+.trashed{
+ margin-top:0px;
+ margin-left: -3.6px;
+ width:250px;
+ height:160px;
+ padding:4px;
+ border:  2px green solid;
+ margin-bottom:30px;
+ display:inline-block;
+}
+
+.myhand{
+  width:900px;
+  height:60px;
+ border:  2px deeppink solid;
+ display:inline-block;
+ padding:10px;
+}
+
+.manzu_class{
+  font-size: 40px;
+  width:50px;
+  height:60px;
+  background-color:#fff;
+  color:red;
+  border:1px solid red;
+  display: inline-block;
+  border-radius:3px;
+  margin-left :4px;
+  margin-top :4px;
+}
+.pinzu_class{
+  font-size: 40px;
+  width:50px;
+  height:60px;
+  background-color:#fff;
+  color:#345777;
+  border:1px solid #345777;
+  display: inline-block;
+  border-radius:3px;
+  margin-left :4px;
+  margin-top :4px;
+}
+.souzu_class{
+  font-size: 40px;
+  width:50px;
+  height:60px;
+  background-color:#fff;
+  color:lime;
+  border:1px solid lime;
+  display: inline-block;
+  border-radius:3px;
+  margin-left :4px;
+  margin-top :4px;
+}
+.jihai_class{
+  font-size: 40px;
+  width:50px;
+  height:60px;
+  background-color:#fff;
+  color:black;
+  border:1px solid black;
+  display: inline-block;
+  border-radius:3px;
+  margin-left :4px;
+  margin-top :4px;
+}
+.jihai_class_ed{
+  font-size: 30px;
+  width:35px;
+  height:45px;
+  background-color:#fff;
+  color:black;
+  border:1px solid black;
+  display: inline-block;
+  border-radius:3px;
+  margin-left :4px;
+  margin-top :4px;
+}
+
+.manzu_class_ed{
+  font-size: 30px;
+  width:35px;
+  height:45px;
+  background-color:#fff;
+  color:red;
+  border:1px solid red;
+  display: inline-block;
+  border-radius:3px;
+  margin-left :4px;
+  margin-top :4px;
+}
+.pinzu_class_ed{
+  font-size: 30px;
+  width:35px;
+  height:45px;
+  background-color:#fff;
+  color:#345777;
+  border:1px solid #345777;
+  display: inline-block;
+  border-radius:3px;
+  margin-left :4px;
+  margin-top :4px;
+}
+.souzu_class_ed{
+  font-size: 30px;
+  width:35px;
+  height:45px;
+  background-color:#fff;
+  color:green;
+  border:1px solid green;
+  display: inline-block;
+  border-radius:3px;
+  margin-left :4px;
+  margin-top :4px;
+}
+
+#card13{
+  margin-left:18px;
+
+}
+.tenpai{
+  width:70px;
+  height:30px;
+  border-radius: 5px;
+  color:#fff;
+  background-color: rgb(230,10,10);
+  display:inline-block;
+  border-left:14px;
+}
+.opacity{
+  opacity: 0.5;
+}
+
+
+.naku{
+  position: absolute;
+  border: 1px solid black;
+  width:400px;
+  height:80px;
+  margin-top: -90px;
+  margin-left: 630px;
+  display: none;
+  text-align: right;
+}
+ .pon{
+   font-size: 16px;
+   width:60px;
+   height:45px;
+  background-color:aqua;
+  color:white;
+  border-radius:3px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right:4px;
+  text-align: center;
+ }
+
+.pon:hover{
+  background-color:orange;
+}
+.naku_inactive{
+  display: none;
+}
+
+.agaru{
+  padding-top:10px;
+ width:300px;
+ height:80px;
+ border:1px orange solid;
+  position:absolute;
+  margin-left: 850px;
+}
+
+.naku_ed{
+  width: 600px;
+  height: 80px;
+  margin-left: 750px;
+  border: 2px solid rgb(230,10,10);
+  opacity: 0.5;
+  position:absolute;
+  text-align: right;
+
+}
+
+
+
+
+.end_header{
+  width:450px;
+  height:90px;
+  line-height: 90px;
+  background-color: black;
+  border: 2px green solid;
+  display: inline-block;
+}
+
+p.end_header span{
+  color:white;
+  font-size: 26px;
+}
+
+.end_yaku{
+  width:500px;
+  height:330px;
+  padding:30px;
+  padding-left: 50px;
+  font-size: 30px;
+  text-align: left;
+  background-color: black;
+  color:white;
+  display: inline-block;
+}
+
+.end_btn{
+  width: 80px;
+  height:40px;
+  line-height: 40px;
+  font-size: 24px;
+  color: rgb(230, 230, 255);
+  border: 3px aqua solid;
+  background-color: blue;
+  display: inline-block;
+
+}
+
+.end_score{
+  width:200px;
+  text-align: right;
+  line-height: 370px;
+  border-top: 5px solid grey;
+}
+.end_point{
+margin-left: 130px;
+width: 150px;
+height: 80px;
+border:white 1px solid;
+background-color: rgb(40,40,40);
+}
+
+.end_btn:hover{
+  opacity: 0.7;
+}

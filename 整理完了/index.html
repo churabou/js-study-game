@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+
+<link rel='stylesheet' href=style.css>
+</head>
+
+<body>
+<div id=big>
+<div id=trashed2 class=top_board>
+
+</div>  <br>
+<div id=trashed3 class='side_board left'></div>
+<div class=center_board></div>
+<div id=trashed1 class='side_board right'></div>
+
+<div id=aaaaa class=agaru></div>
+
+<br>
+<div id=trashed class=trashed></div><br>
+<div id=naku class=naku>
+
+  <p  id=pon class=naku_inactive>ポン</p>
+  <p  id=tii class=naku_inactive>チー</p>
+  <p  id=kan class=naku_inactive>カン</p>
+  <p  id=reach class=naku_inactive>リーチ</p>
+  <p  id=tumo class=naku_inactive>つも</p>
+  <p  id=ron class=naku_inactive>ロン</p>
+  <p  id=cancel class=pon>キャンセル</p>
+
+
+</div>
+<div id=myhand class=myhand></div>
+<div id=naku_ed class=naku_ed></div>
+
+
+<br>
+<br>
+<br>
+<button onclick=start() style.display='inline-block'>START</button>
+
+  <div  class="tenpai opacity" onclick=get()>get</div>
+</div>  <!--big-->
+
+<div id=end>
+<p class=end_header> <span style.color='white'>東四局</span>   <span>ロン</span>      <span>プレイヤーネーム</span></p>
+<p id=yourhand>君が上がったパイ</p>
+<p class=end_yaku>
+立直<br>
+平和<br>
+断么<br>
+<span class=end_score>   　　　30符 4翻</span><span class=end_point>11600点</span>
+</p>
+<p>scores</p>
+<p class=end_btn>卓確認</p><span>　　　　　　　　　　　　　　　　　　　　　　　　</span>
+<p class=end_btn onclick="another_game()">OK</p>
+</div>
+
+
+</body>
+<script>function _$(hiki){return document.getElementById(hiki)}</script>
+<script src='first.js'></script>
+<script src='align.js'></script>
+<script src='functions.js'></script>
+<script src='player.js'></script>
+<script src='action.js'></script>
+<script src='computer.js'></script>
+<script src='menu.js'></script>
+<script src='new_tenpai.js'></script>
+<script>
+_$('end').style.display='none'
+_$('naku').style.display = 'none'
+
+
+var tile_own = [];
+var lasttile,trashed,myhand,turn;
+
+var isStarted = false;
+
+function start(){
+  if(isStarted ){ return;}
+    player.get();
+    isStarted = true;
+}
+
+
+
+(function (){
+  for(var i=0; i<14;i++){
+   create(i);  //からの牌を作る
+  }
+
+  pair_random();
+  distribute(); //牌を入れる
+  update_cards(); //オブジェクトで今ある牌を管理
+  setTimeout(align,1000);
+
+  trashed  = document.getElementById('trashed');
+  myhand   = document.getElementById('myhand');
+  lasttile = document.getElementById('card13');
+  turn = 0;
+})();
+
+</script>
+</body>
+</html>
